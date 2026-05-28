@@ -16,7 +16,7 @@ if %errorlevel% neq 0 (
 echo [OK] Python detected.
 echo.
 echo Installing/Verifying Python dependencies...
-py -m pip install fastapi uvicorn psutil
+py -m pip install fastapi uvicorn psutil websockets
 if %errorlevel% neq 0 (
     echo [WARNING] Dependency installation encountered an error. 
     echo Attempting run anyway...
