@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aether System HUD - Command Deck</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN for live historical charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Background glows -->
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="system-header">
+            <div class="brand">
+                <i class="fa-solid fa-microchip brand-icon"></i>
+                <div class="brand-info">
+                    <h1>AETHER <span class="accent">//</span> SYSTEM HUD</h1>
+                    <span class="subtitle">HARDWARE COMMAND DECK v1.2</span>
+                </div>
+            </div>
+            <div class="header-metadata">
+                <div class="meta-item">
+                    <span class="meta-label">UPTIME:</span>
+                    <span class="meta-val" id="uptimeVal">0h 0m</span>
+                </div>
+                <div class="meta-item status-box" id="connStatusBox">
+                    <span class="status-indicator-dot pulsating"></span>
+                    <span id="connStatusText">OFFLINE</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Workspace -->
+        <main class="hud-dashboard">
+            
+            <!-- Row 1: Hardware Telemetry Circular Gauges -->
+            <section class="telemetry-row">
+                <!-- CPU Dial Card -->
+                <div class="hud-card gauge-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-server"></i> CPU LOAD</h3>
+                        <span class="core-count" id="cpuCoresVal">Cores: --</span>
+                    </div>
+                    <div class="gauge-wrapper">
+                        <svg class="progress-ring" width="160" height="160">
+                            <circle class="progress-ring-bg" stroke="rgba(255,255,255,0.05)" stroke-width="8" fill="transparent" r="70" cx="80" cy="80"/>
+                            <circle class="progress-ring-bar" id="cpuRing" stroke="var(--neon-blue)" stroke-dasharray="439.8" stroke-dashoffset="439.8" stroke-width="8" stroke-linecap="round" fill="transparent" r="70" cx="80" cy="80"/>
+                        </svg>
+                        <div class="gauge-text">
+                            <span class="percentage" id="cpuPercentText">0%</span>
+                            <span class="label">UTILIZATION</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RAM Dial Card -->
+                <div class="hud-card gauge-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-memory"></i> SYSTEM RAM</h3>
+                        <span class="memory-usage-text" id="ramDetailsVal">0.0 / 0.0 GB</span>
+                    </div>
+                    <div class="gauge-wrapper">
+                        <svg class="progress-ring" width="160" height="160">
+                            <circle class="progress-ring-bg" stroke="rgba(255,255,255,0.05)" stroke-width="8" fill="transparent" r="70" cx="80" cy="80"/>
+                            <circle class="progress-ring-bar" id="ramRing" stroke="var(--neon-pink)" stroke-dasharray="439.8" stroke-dashoffset="439.8" stroke-width="8" stroke-linecap="round" fill="transparent" r="70" cx="80" cy="80"/>
+                        </svg>
+                        <div class="gauge-text">
+                            <span class="percentage" id="ramPercentText">0%</span>
+                            <span class="label">MEMORY IN-USE</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Disk Dial Card -->
+                <div class="hud-card gauge-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-database"></i> STORAGE</h3>
+                        <span class="disk-usage-text" id="diskDetailsVal">0.0 / 0.0 GB</span>
+                    </div>
+                    <div class="gauge-wrapper">
+                        <svg class="progress-ring" width="160" height="160">
+                            <circle class="progress-ring-bg" stroke="rgba(255,255,255,0.05)" stroke-width="8" fill="transparent" r="70" cx="80" cy="80"/>
+                            <circle class="progress-ring-bar" id="diskRing" stroke="var(--neon-gold)" stroke-dasharray="439.8" stroke-dashoffset="439.8" stroke-width="8" stroke-linecap="round" fill="transparent" r="70" cx="80" cy="80"/>
+                        </svg>
+                        <div class="gauge-text">
+                            <span class="percentage" id="diskPercentText">0%</span>
+                            <span class="label">DISK CAPACITY</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Row 2: Live Historical Utilization Charts & Network -->
+            <section class="telemetry-chart-row">
+                <div class="hud-card chart-card">
+                    <div class="chart-header">
+                        <h3><i class="fa-solid fa-chart-line"></i> TELEMETRY LOGS (REALTIME)</h3>
+                        <div class="network-stats">
+                            <div class="net-metric">
+                                <i class="fa-solid fa-arrow-up"></i>
+                                <span class="net-label">SENT:</span>
+                                <span class="net-val" id="netSentText">0.0 MB</span>
+                            </div>
+                            <div class="net-metric">
+                                <i class="fa-solid fa-arrow-down"></i>
+                                <span class="net-label">RECV:</span>
+                                <span class="net-val" id="netRecvText">0.0 MB</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="telemetryChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Row 3: Live Process Manager & Terminal HUD -->
+            <section class="hud-bottom-row">
+                <!-- Left: Process Manager -->
+                <div class="hud-card process-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-list-check"></i> PROCESS DETECTOR (TOP CPU/MEM)</h3>
+                        <span class="process-counter" id="processCounterText">8 threads tracked</span>
+                    </div>
+                    <div class="process-table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>PID</th>
+                                    <th>PROCESS NAME</th>
+                                    <th>CPU%</th>
+                                    <th>RAM%</th>
+                                    <th style="text-align: center;">TERMINATION</th>
+                                </tr>
+                            </thead>
+                            <tbody id="processTableBody">
+                                <tr>
+                                    <td colspan="5" class="table-empty">Connecting to backend daemon...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Right: Command Terminal & Voice Deck -->
+                <div class="hud-card terminal-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-terminal"></i> COGNITIVE COMMAND CONSOLE</h3>
+                        <div class="speech-status-indicator" id="voiceStatus">READY</div>
+                    </div>
+                    <div class="terminal-body" id="terminalLogs">
+                        <div class="log-line sys-log">SYSTEM DECK ONLINE. INITIALIZING SECURE SHELL INTERFACE...</div>
+                        <div class="log-line sys-log">AETHER SERVER DEPLOYED ON LOCALHOST PORT 8000.</div>
+                        <div class="log-line prompt-log">Try saying or entering: "system summary", "scan network" or "disk check".</div>
+                    </div>
+                    <div class="terminal-footer">
+                        <button class="voice-btn" id="micBtn" title="Toggle Voice Recognition">
+                            <i class="fa-solid fa-microphone"></i>
+                        </button>
+                        <input type="text" id="terminalInput" placeholder="Enter deck command here or speak..." autocomplete="off">
+                        <button class="run-btn" id="runCmdBtn">RUN</button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
